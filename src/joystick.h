@@ -7,8 +7,6 @@
 #include <linux/joystick.h>
 
 
-#define JOYSTICK_DEVICE  "/dev/input/js0"
-
 
 int open_joystick(char *device);
 
