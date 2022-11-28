@@ -127,7 +127,7 @@ int main() {
     joystick_fd = open_joystick(joystick_device);
     printf("opened %s\n", joystick_device);
 
-    uart_fd = open_uart(uart_device, B115200);
+    uart_fd = open_uart(uart_device, B57600);
     printf("opened %s\n", uart_device);
 
     pthread_t reader_thread, updater_thread;
