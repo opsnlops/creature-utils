@@ -14,6 +14,8 @@ add_executable(joystick_dmx
         src/joystick.h
         src/joystick.cpp
         src/servo.h
-        src/servo.cpp)
+        src/servo.cpp
+        src/uart.cpp
+        src/uart.h)
 
 target_link_libraries(joystick_dmx PRIVATE Threads::Threads)
