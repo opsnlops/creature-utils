@@ -8,22 +8,18 @@ int main() {
     int fd = open_joystick(JOYSTICK_DEVICE);
 
     js_event event = {};
+    ssize_t value = 0;
 
     /* This loop will exit if the controller is unplugged. */
-    while (read_event(fd, &event) == 0) {
-        switch (event.type) {
-            case JS_EVENT_BUTTON:
-                printf("Button %u %s\n", event.number, event.value ? "pressed" : "released");
-                break;
-            case JS_EVENT_AXIS:
-                printf("Axis %u %6d\n", event.number, event.value);
-                break;
-            default:
-                /* Ignore init events. */
-                break;
+    while (read_joystick_event(fd, &event) == 0) {
+
+        // If this is an axis event, process it
+        if (event.type == JS_EVENT_AXIS) {
+            value = js_get_axis_event_value(&event);
+            printf("%zd\n", value);
         }
 
-        fflush(stdout);
+        // Ignore the other event types for now (buttons and init)
     }
 
     close_joystick(fd);
