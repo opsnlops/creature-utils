@@ -21,4 +21,4 @@
 #define STAND_ROTATE    6
 
 
-void parrot_value_from_joystick(u_int8_t axis, u_int16_t value);
+int parrot_value_from_joystick(u_int8_t axis, u_int16_t value);

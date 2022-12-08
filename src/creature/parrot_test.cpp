@@ -14,6 +14,7 @@ int main() {
 
     parrot_value_from_joystick(1, 39024);
     parrot_value_from_joystick(0, 12345);
+    parrot_value_from_joystick(8, 666);
 
 
     return 0;
