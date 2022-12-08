@@ -45,6 +45,9 @@ int read_joystick_event(int fd, struct js_event *event) {
  */
 ssize_t js_get_axis_event_value(struct js_event *event) {
 
+
+    // TODO: This is pretty silly. Do this with bit-shifts instead.
+
     // Make sure this is an axis event
     assert(event->type == JS_EVENT_AXIS);
 
