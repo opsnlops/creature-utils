@@ -17,8 +17,8 @@
 // How long should we sleep on each update run?
 useconds_t sleep_time = 25 * 1000;  // 25ms, which is 40Hz
 
-char *joystick_device = "/dev/input/js0";
-char *uart_device = "/dev/ttyUSB0";
+const char *joystick_device = "/dev/input/js0";
+const char *uart_device = "/dev/ttyUSB0";
 
 // Take the lazy way out and keep our file descriptors in the global scope 😅
 int joystick_fd = 0;
