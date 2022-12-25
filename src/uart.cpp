@@ -10,7 +10,7 @@
 
 #include "uart.h"
 
-int open_uart(char *device, int baud) {
+int open_uart(const char *device, int baud) {
 
     // Open in read/write mode
     int fd = open(&device[0], O_RDWR | O_NOCTTY);

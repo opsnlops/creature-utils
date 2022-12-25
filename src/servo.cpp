@@ -3,8 +3,10 @@
 #include <cstdio>
 #include <cstdlib>
 
+
 #include "servo.h"
 
+#include "log.h"
 
 /**
  * Safely set up a new servo
@@ -20,7 +22,7 @@ void init_servo(servo *s, u_int8_t joystick_axis, bool inverted) {
     s->requested_value = 127;
     s->inverted = inverted;
 
-    printf("Paying attention to axis %d\n", s->joystick_axis);
+    log_debug("Paying attention to axis %d", s->joystick_axis);
 }
 
 /**
