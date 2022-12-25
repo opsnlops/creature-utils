@@ -1,8 +1,13 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.18)
 
-project(controller C CXX ASM)
+project(controller
+        VERSION 0.1.0
+        DESCRIPTION "Allows for manual control of one of April's Creatures"
+        HOMEPAGE_URL https://github.com/opsnlops/creature-controller
+        LANGUAGES C CXX)
+
 set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 find_package(PkgConfig REQUIRED)
 
@@ -14,9 +19,6 @@ find_package(Threads REQUIRED)
 pkg_check_modules(OLA REQUIRED
         libola
         )
-
-
-
 
 add_definitions(-DLOG_USE_COLOR)
 
@@ -34,17 +36,18 @@ include_directories(
 
 add_executable(controller
         ${sourceFiles}
-        .)
-
-target_include_directories(controller PUBLIC
-        ${OLA_INCLUDE_DIRS}
+        .
         )
 
-target_compile_options(controller PUBLIC
-        ${OLA_CFLAGS_OTHER}
+target_include_directories(controller
+        PUBLIC ${OLA_INCLUDE_DIRS}
         )
 
-target_link_libraries(controller PRIVATE
-        ${OLA_LIBRARIES}
+target_compile_options(controller
+        PUBLIC ${OLA_CFLAGS_OTHER}
+        )
+
+target_link_libraries(controller
+        PRIVATE ${OLA_LIBRARIES}
         Threads::Threads
         )
