@@ -7,8 +7,16 @@
 #include <termios.h>
 #include <unistd.h>
 
+#include "config.h"
 
+#include "servo.h"
 #include "uart.h"
+
+extern int uart_fd;
+extern servo servos[NUM_SERVOS];
+extern uint8_t header[HEADER_SIZE];
+
+extern Config* config;
 
 int open_uart(const char *device, int baud) {
 
@@ -67,4 +75,61 @@ int set_uart_attrs(int fd, int baud, int parity, int wait_time_ms) {
         return -1;
     }
     return 0;
+}
+
+
+/**
+ * Sends updates down the wire if the value of one of the servos changed
+ * @param ptr
+ * @return
+ */
+[[noreturn]] void *send_updates_thread(void *ptr)
+{
+
+    // Buffer for the bytes we're going to send
+    u_int8_t send_buffer[HEADER_SIZE + NUM_SERVOS + 1];
+
+    bool update_needed = false;
+
+    while(true) {
+
+        // Walk each servo and see if updates are needed
+        for(auto & servo : servos) {
+            if(servo_needs_update(&servo)) {
+                update_needed = true;
+                break;
+            }
+        }
+
+        if(update_needed) {
+
+            u_int8_t bytes = 0;
+            memset(&send_buffer, '\0', HEADER_SIZE + NUM_SERVOS + 1);
+            memcpy(&send_buffer, &header, HEADER_SIZE);
+
+            // Copy out the state of the servos to the buffer, skipping the size of the header
+            for(auto & servo : servos) {
+
+                send_buffer[HEADER_SIZE + bytes++] = servo.requested_value;
+                servo_requested_to_current(&servo);
+            }
+
+            // Write this out to the port
+            write(uart_fd, &send_buffer, HEADER_SIZE + NUM_SERVOS + 1);
+
+#ifdef DEBUG
+            for(unsigned char i : send_buffer)
+            {
+                printf("0x%x ", i);
+            }
+            // End the line and flush
+            printf("\n");
+            fflush(stdout);
+#endif
+        }
+
+        update_needed = false;
+        usleep(config->getFrameTime()); // Defaults to 40Hz
+
+    }
 }

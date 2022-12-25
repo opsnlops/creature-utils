@@ -14,7 +14,6 @@
 #include "servo.h"
 
 
-
 extern Config* config;
 extern int joystick_fd;
 extern servo servos[NUM_SERVOS];
@@ -70,8 +69,8 @@ ssize_t js_get_axis_event_value(struct js_event *event) {
     // Map to the range 0-255
     ssize_t dmx_value = UCHAR_MAX * percent_used;
 
-
-    //printf("Looking at event %d %d (%d -> %zd)\n", event->number, event->value, value, dmx_value);
+    // Log the event
+    log_debug("Processed event %d %d (%d -> %zd)", event->number, event->value, value, dmx_value);
 
     return dmx_value;
 }
@@ -86,11 +85,11 @@ void *joystick_reader_thread(void *ptr)
     // one of the axes we care about.
     while (read_joystick_event(joystick_fd, &event) == 0) {
 
+        // Toss something into the firehose
+        log_trace("JS event: type: %d, number: %d, value: %d", event.type, event.number, event.value);
+
         // If this is an axis event, process it
         if (event.type == JS_EVENT_AXIS) {
-
-            // Leave a trace message for debugging
-            log_trace("*: %d -> %d", event.number, event.value);
 
             // Walk the servo list and see if this is one we care about
             for(auto & servo : servos) {
