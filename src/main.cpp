@@ -9,7 +9,6 @@
 #include "log.h"
 
 #include "config.h"
-#include "ola.h"
 #include "joystick.h"
 #include "servo.h"
 #include "uart.h"
@@ -51,7 +50,6 @@ int main(int argc, char **argv) {
         exit(0);
     }
 
-    ola_test();
 
     // Set up the servos
     init_servo(&servos[0], 0, false);

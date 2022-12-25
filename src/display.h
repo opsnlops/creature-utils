@@ -17,7 +17,7 @@ class InfoDisplay {
 
 public:
 
-    InfoDisplay(Config* config);
+    explicit InfoDisplay(Config* config);
 
     Config* config;
 

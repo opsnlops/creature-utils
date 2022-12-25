@@ -2,15 +2,12 @@
 #include <cstring>
 #include <unistd.h>
 #include <pthread.h>
-#include <termios.h>
-
-
-#include "log.h"
 
 #include "config.h"
 
-#include "display.h"
+#include "log.h"
 
+#include "display.h"
 #include "servo.h"
 
 extern servo servos[NUM_SERVOS];
@@ -76,16 +73,19 @@ void InfoDisplay::start() {
 
 void InfoDisplay::makeServoDisplayString(char* dst, int bufferSize) {
 
+    char miniBuffer[5] = {};
+
     // Wipe out the buffer
     memset(dst, '\0', bufferSize);
 
     int currentChar = 0;
     dst[currentChar++] = '[';
 
-    char miniBuffer[5] = {};
-    memset(miniBuffer, '\0', 5);
-
     for(int i = 0; i < NUM_SERVOS; i++) {
+
+        // Zero out the mini buffer
+        memset(miniBuffer, '\0', 5);
+
         dst[currentChar++] = ' ';
 
         // Copy this value into a mini buffer

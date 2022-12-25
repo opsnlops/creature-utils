@@ -9,16 +9,16 @@ project(controller
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 20)
 
+# TODO: Make this use an ENV var
+add_subdirectory(sACN)
+
+
 find_package(PkgConfig REQUIRED)
 
 # This project uses threads
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-# OpenLighting, used for DMX
-pkg_check_modules(OLA REQUIRED
-        libola
-        )
 
 add_definitions(-DLOG_USE_COLOR)
 
@@ -39,15 +39,9 @@ add_executable(controller
         .
         )
 
-target_include_directories(controller
-        PUBLIC ${OLA_INCLUDE_DIRS}
-        )
-
-target_compile_options(controller
-        PUBLIC ${OLA_CFLAGS_OTHER}
-        )
 
 target_link_libraries(controller
-        PRIVATE ${OLA_LIBRARIES}
+        PRIVATE
         Threads::Threads
+        sACN
         )
