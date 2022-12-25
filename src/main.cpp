@@ -6,7 +6,10 @@
 #include <cstring>
 #include <linux/joystick.h>
 
+#include "log.h"
+
 #include "config.h"
+#include "ola.h"
 #include "joystick.h"
 #include "servo.h"
 #include "uart.h"
@@ -16,8 +19,6 @@
 // How long should we sleep on each update run?
 useconds_t sleep_time = 25 * 1000;  // 25ms, which is 40Hz
 
-const char *joystick_device = "/dev/input/js0";
-const char *uart_device = "/dev/ttyUSB0";
 
 // Take the lazy way out and keep our file descriptors in the global scope 😅
 int joystick_fd = 0;
@@ -90,16 +91,36 @@ Config* config = nullptr;
     }
 }
 
-int main() {
+int main(int argc, char **argv) {
 
-    config = new Config();
+    const char* programName = argv[0];
+
+    // Default to INFO logging
+    log_set_level(LOG_INFO);
+
+    // Create the config
+    config = new Config(argc, argv);
+    if(config->processCommandLine(argc, argv) != 1) {
+        log_warn("processCommandLine() did not return 1");
+        config->doHelp(programName);
+        exit(0);
+    }
+
+    if(!config->useJoystick)
+    {
+        log_warn("useJoystick is false");
+        config->doHelp(programName);
+        exit(0);
+    }
+
+    ola_test();
 
     // Set up the servos
     init_servo(&servos[0], 3, false);
     init_servo(&servos[1], 4, true);
 
-    joystick_fd = open_joystick(joystick_device);
-    printf("opened %s\n", joystick_device);
+    joystick_fd = open_joystick(config->getJoystick());
+    printf("opened %s\n", config->getJoystick());
 
     //uart_fd = open_uart(uart_device, B57600);
     //printf("opened %s\n", uart_device);
