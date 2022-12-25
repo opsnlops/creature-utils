@@ -24,8 +24,10 @@ int open_joystick(const char *device) {
 
     int fd = open(device, O_RDONLY);
 
-    if (fd == -1)
-        perror("Could not open joystick");
+    if (fd == -1) {
+        log_fatal("Could not open joystick on %s", device);
+        exit(0);
+}
 
     return fd;
 }
@@ -87,9 +89,9 @@ void *joystick_reader_thread(void *ptr)
         // If this is an axis event, process it
         if (event.type == JS_EVENT_AXIS) {
 
-#ifdef DEBUG
-            log_debug("*: %d", event.number);
-#endif
+            // Leave a trace message for debugging
+            log_trace("*: %d -> %d", event.number, event.value);
+
             // Walk the servo list and see if this is one we care about
             for(auto & servo : servos) {
                 if(servo.joystick_axis == event.number)

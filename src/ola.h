@@ -7,3 +7,4 @@
 #include <ola/Callback.h>
 
 
+void ola_test();
