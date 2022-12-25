@@ -1,7 +1,5 @@
 
 #include <getopt.h>
-#include <cstdlib>
-#include <cstring>
 #include "config.h"
 
 #include "log.h"
@@ -11,6 +9,13 @@ Config::Config(int argc, char **argv) {
 
     log_debug("new Config() made");
 
+}
+
+bool Config::isUartActive() {
+    return useUART;
+}
+bool Config::isJoystickActive() {
+    return useJoystick;
 }
 
 const char* Config::getUart() {

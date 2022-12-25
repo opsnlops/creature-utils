@@ -26,10 +26,8 @@ public:
     int processCommandLine(int argc, char **argv);
     void doHelp(const char* programName);
 
-    bool useUART = defaultUart;
-    bool useJoystick = defaultUseJoystick;
-    bool useDmx = defaultUseDmx;
-
+    bool isUartActive();
+    bool isJoystickActive();
 
     const char* getUart();
     const char* getJoystick();
@@ -42,9 +40,13 @@ private:
     const char* defaultJoystick = "/dev/input/js0";
     const char* defaultUart = "/dev/ttyUSB0";
     bool defaultUseDmx = false;
-    bool dafaultUseUart = false;
+    bool defaultUseUart = false;
     bool defaultUseJoystick = false;
 
+
+    bool useUART = defaultUseUart;
+    bool useJoystick = defaultUseJoystick;
+    bool useDmx = defaultUseDmx;
 
     const char* uartDevice;
     const char* joystickDevice;

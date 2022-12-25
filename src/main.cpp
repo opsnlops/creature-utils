@@ -106,9 +106,9 @@ int main(int argc, char **argv) {
         exit(0);
     }
 
-    if(!config->useJoystick)
+    if(!config->isJoystickActive())
     {
-        log_warn("useJoystick is false");
+        log_warn("joystick is not in use");
         config->doHelp(programName);
         exit(0);
     }
@@ -119,24 +119,30 @@ int main(int argc, char **argv) {
     init_servo(&servos[0], 3, false);
     init_servo(&servos[1], 4, true);
 
-    joystick_fd = open_joystick(config->getJoystick());
-    printf("opened %s\n", config->getJoystick());
+    if(config->isJoystickActive()) {
+        log_debug("attempting to open %s", config->getJoystick());
+        joystick_fd = open_joystick(config->getJoystick());
+        log_info("opened joystick: %s", config->getJoystick());
+    }
 
-    //uart_fd = open_uart(uart_device, B57600);
-    //printf("opened %s\n", uart_device);
+    if(config->isUartActive()) {
+        log_debug("attempting to open %s", config->getUart());
+        uart_fd = open_uart(config->getUart(), B57600);
+        log_info("opened uart: %s", config->getUart());
+    }
 
     pthread_t reader_thread, updater_thread;
 
     // Go little threads go!
-    pthread_create(&reader_thread, nullptr, joystick_reader_thread, nullptr);
-    //pthread_create(&updater_thread, nullptr, send_updates_thread, nullptr);
+    if(config->isJoystickActive()) pthread_create(&reader_thread, nullptr, joystick_reader_thread, nullptr);
+    if(config->isUartActive()) pthread_create(&updater_thread, nullptr, send_updates_thread, nullptr);
 
     // Wait for the threads to join us!
-    pthread_join( reader_thread, nullptr);
-    //pthread_join( updater_thread, nullptr);
+    if(config->isJoystickActive()) pthread_join(reader_thread, nullptr);
+    if(config->isUartActive()) pthread_join( updater_thread, nullptr);
 
-    close_joystick(joystick_fd);
-    //close_uart(uart_fd);
+    if(config->isJoystickActive()) close_joystick(joystick_fd);
+    if(config->isUartActive()) close_uart(uart_fd);
     return 0;
 
 }
