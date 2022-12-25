@@ -1,8 +1,13 @@
 
 #pragma once
 
+#include <cstdint>
 
-#define NUM_SERVOS 2
+
+// HOP
+#define HEADER_SIZE 3
+
+#define NUM_SERVOS 6
 
 #define DEBUG 1
 
@@ -31,6 +36,7 @@ public:
 
     const char* getUart();
     const char* getJoystick();
+    useconds_t getFrameTime();
 
 private:
 
@@ -42,11 +48,13 @@ private:
     bool defaultUseDmx = false;
     bool defaultUseUart = false;
     bool defaultUseJoystick = false;
+    uint32_t defaultFrameTime = 25;
 
 
     bool useUART = defaultUseUart;
     bool useJoystick = defaultUseJoystick;
     bool useDmx = defaultUseDmx;
+    useconds_t frameTime = defaultFrameTime * 1000;
 
     const char* uartDevice;
     const char* joystickDevice;
