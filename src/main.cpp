@@ -1,11 +1,9 @@
 
-#include <cstdio>
-#include <unistd.h>
+
 #include <pthread.h>
 #include <termios.h>
-#include <cstring>
-#include <linux/joystick.h>
-
+#include <cctype>
+#include <unistd.h>
 #include "log.h"
 
 #include "config.h"
@@ -14,6 +12,7 @@
 #include "uart.h"
 #include "display.h"
 
+#include "dmx/dmx.h"
 
 // Take the lazy way out and keep our file descriptors in the global scope 😅
 int joystick_fd = 0;
@@ -22,10 +21,8 @@ int uart_fd = 0;
 // An array of servos
 servo servos[NUM_SERVOS] = {};
 
-
+// Our configuration
 Config* config = nullptr;
-
-
 
 
 int main(int argc, char **argv) {
@@ -51,6 +48,7 @@ int main(int argc, char **argv) {
     }
 
 
+
     // Set up the servos
     init_servo(&servos[0], 0, false);
     init_servo(&servos[1], 1, true);
@@ -73,6 +71,8 @@ int main(int argc, char **argv) {
 
     auto display = new InfoDisplay(config);
     display->start();
+    auto dmx = new DMX(config);
+    dmx->start();
 
     pthread_t reader_thread, updater_thread;
 

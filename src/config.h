@@ -1,7 +1,10 @@
 
 #pragma once
 
+#include <climits>
 #include <cstdint>
+#include <cctype>
+#include <unistd.h>
 
 
 // HOP
@@ -38,6 +41,8 @@ public:
     const char* getJoystick();
     useconds_t getFrameTime();
 
+    char* getHostname();
+
 private:
 
     //
@@ -58,6 +63,8 @@ private:
 
     const char* uartDevice;
     const char* joystickDevice;
+
+    char hostname[HOST_NAME_MAX];
 
 
 

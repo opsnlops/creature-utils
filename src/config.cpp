@@ -1,6 +1,11 @@
 
 #include <getopt.h>
 #include <cstdlib>
+#include <unistd.h>
+#include <climits>
+#include <cstring>
+
+
 #include "config.h"
 
 #include "log.h"
@@ -12,6 +17,15 @@ uint8_t header[HEADER_SIZE] = { 0x48, 0x4F, 0x50 };
 Config::Config(int argc, char **argv) {
 
     log_debug("new Config() made");
+
+    // Go look up our hostname
+    memset(hostname, '\0', HOST_NAME_MAX);
+    if(gethostname(hostname, HOST_NAME_MAX) == -1) {
+        log_warn("unable to get hostname");
+        memcpy(hostname, "[Unknown]", 9);
+    }
+
+    log_debug("my hostname: %s", hostname);
 
 }
 
@@ -32,6 +46,10 @@ const char* Config::getJoystick() {
 
 useconds_t Config::getFrameTime() {
     return frameTime;
+}
+
+char* Config::getHostname() {
+    return hostname;
 }
 
 void Config::doHelp(const char* progname) {

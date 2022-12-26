@@ -9,9 +9,6 @@ project(controller
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 20)
 
-# TODO: Make this use an ENV var
-add_subdirectory(sACN)
-
 
 find_package(PkgConfig REQUIRED)
 
@@ -26,12 +23,15 @@ add_definitions(-DLOG_USE_COLOR)
 file(GLOB sourceFiles
         src/*
         src/creature/*
+        src/dmx/*
         lib/log.c/src/*
+        lib/libe131/src/*
         )
 
 include_directories(
         src
         lib/log.c/src
+        lib/libe131/src
         )
 
 add_executable(controller
@@ -43,5 +43,4 @@ add_executable(controller
 target_link_libraries(controller
         PRIVATE
         Threads::Threads
-        sACN
         )
