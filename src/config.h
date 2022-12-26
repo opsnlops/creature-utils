@@ -24,6 +24,8 @@ class Config {
 
 public:
 
+    enum PacketType { unicast, multicast };
+
     /**
      * Build a `Config` object from the command line args
      *
@@ -43,6 +45,11 @@ public:
 
     char* getHostname();
 
+    PacketType getNetworkMode();
+    const char* getUnicastTargetAddress();
+    uint16_t getUniverse();
+
+
 private:
 
     //
@@ -54,12 +61,20 @@ private:
     bool defaultUseUart = false;
     bool defaultUseJoystick = false;
     uint32_t defaultFrameTime = 25;
+    PacketType defaultNetworkMode = multicast;
+    uint16_t defaultUniverse = 1;
+    const char* defaultUnicastTargetAddress = "10.3.2.11";  // fuzzball
 
 
     bool useUART = defaultUseUart;
     bool useJoystick = defaultUseJoystick;
     bool useDmx = defaultUseDmx;
     useconds_t frameTime = defaultFrameTime * 1000;
+
+    uint16_t universe = defaultUniverse;
+
+    PacketType networkMode = defaultNetworkMode;
+    const char* unicastTargetAddress = defaultUnicastTargetAddress;
 
     const char* uartDevice;
     const char* joystickDevice;

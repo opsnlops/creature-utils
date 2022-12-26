@@ -21,7 +21,7 @@ DMX::DMX(Config* config) {
     log_trace("starting up the DMX sender");
 
     this->config = config;
-    
+
     char tempBuffer[HOST_NAME_MAX + 25];
     memset(&tempBuffer, '\0', HOST_NAME_MAX + 25);
     snprintf(tempBuffer, HOST_NAME_MAX + 24, "E1.31 client on %s", config->getHostname());
@@ -75,18 +75,28 @@ uint16_t DMX::getHostBannerLength() {
     e131_packet_t packet;
     e131_addr_t dest;
 
-    // TODO: Make universe be configurable
-    e131_pkt_init(&packet, 1, NUM_SERVOS);
+    e131_pkt_init(&packet, dmx->config->getUniverse(), NUM_SERVOS);
     memcpy(&packet.frame.source_name, dmx->getHostBanner(), dmx->getHostBannerLength());
     if (e131_set_option(&packet, E131_OPT_PREVIEW, false) < 0)
         log_fatal("unable to set e131 packet option");
 
-    // TODO: Make this also configurable
-    if (e131_unicast_dest(&dest, "10.3.2.11", E131_DEFAULT_PORT) < 0)
-        log_fatal("unable to set e131 destination");
+    // Set the target
+    if(dmx->config->getNetworkMode() == Config::unicast ) {
+        if (e131_unicast_dest(&dest, dmx->getConfig()->getUnicastTargetAddress(), E131_DEFAULT_PORT) < 0)
+            log_fatal("unable to set e131 destination");
+
+        log_debug("using unicast");
+    }
+    else {
+        if (e131_multicast_dest(&dest, 1, E131_DEFAULT_PORT) < 0)
+            log_fatal("unable to set e131 destination");
+
+        log_debug("using mutlicast");
+    }
     log_debug("destination set");
 
-    e131_pkt_dump(stdout, &packet);
+    // This is helpful for debugging
+    //e131_pkt_dump(stdout, &packet);
 
     log_trace("starting to send updates");
 
