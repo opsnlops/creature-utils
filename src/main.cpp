@@ -16,6 +16,7 @@
 
 // Take the lazy way out and keep our file descriptors in the global scope 😅
 int joystick_fd = 0;
+int second_joystick_fd = 0;
 int uart_fd = 0;
 
 // An array of servos
@@ -47,20 +48,33 @@ int main(int argc, char **argv) {
         exit(0);
     }
 
-
-
     // Set up the servos
     init_servo(&servos[0], 0, false);
-    init_servo(&servos[1], 1, true);
-    init_servo(&servos[2], 3, false);
-    init_servo(&servos[3], 4, true);
-    init_servo(&servos[4], 2, false);
+    init_servo(&servos[1], 1, false);
+    init_servo(&servos[2], 2, false);
+    init_servo(&servos[3], 3, false);
+    init_servo(&servos[4], 4, false);
     init_servo(&servos[5], 5, false);
+
+    if(config->isSecondJoystickActive()) {
+        init_servo(&servos[6], 6, false);
+        init_servo(&servos[7], 7, false);
+        init_servo(&servos[8], 8, false);
+        init_servo(&servos[9], 9, false);
+        init_servo(&servos[10], 10, false);
+        init_servo(&servos[11], 11, false);
+    }
 
     if(config->isJoystickActive()) {
         log_debug("attempting to open %s", config->getJoystick());
         joystick_fd = open_joystick(config->getJoystick());
         log_info("opened joystick: %s", config->getJoystick());
+    }
+
+    if(config->isSecondJoystickActive()) {
+        log_debug("attempting to open %s", config->getSecondJoystick());
+        second_joystick_fd = open_joystick(config->getSecondJoystick());
+        log_info("opened joystick: %s", config->getSecondJoystick());
     }
 
     if(config->isUartActive()) {
@@ -74,17 +88,20 @@ int main(int argc, char **argv) {
     auto dmx = new DMX(config);
     dmx->start();
 
-    pthread_t reader_thread, updater_thread;
+    pthread_t reader_thread, second_reader_thread, updater_thread;
 
     // Go little threads go!
     if(config->isJoystickActive()) pthread_create(&reader_thread, nullptr, joystick_reader_thread, nullptr);
+    if(config->isSecondJoystickActive()) pthread_create(&second_reader_thread, nullptr, second_joystick_reader_thread, nullptr);
     if(config->isUartActive()) pthread_create(&updater_thread, nullptr, send_updates_thread, nullptr);
 
     // Wait for the threads to join us!
     if(config->isJoystickActive()) pthread_join(reader_thread, nullptr);
+    if(config->isSecondJoystickActive()) pthread_join(second_reader_thread, nullptr);
     if(config->isUartActive()) pthread_join( updater_thread, nullptr);
 
-    if(config->isJoystickActive()) close_joystick(joystick_fd);
+    if(config->isJoystickActive()) close_joystick(second_joystick_fd);
+    if(config->isSecondJoystickActive()) close_joystick(second_joystick_fd);
     if(config->isUartActive()) close_uart(uart_fd);
     return 0;
 

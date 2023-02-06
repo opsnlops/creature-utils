@@ -18,3 +18,4 @@ ssize_t js_get_axis_event_value(struct js_event *event);
 
 
 void *joystick_reader_thread(void *ptr);
+void *second_joystick_reader_thread(void *ptr);

@@ -16,6 +16,7 @@
 
 extern Config* config;
 extern int joystick_fd;
+extern int second_joystick_fd;
 extern servo servos[NUM_SERVOS];
 
 
@@ -94,6 +95,37 @@ void *joystick_reader_thread(void *ptr)
             // Walk the servo list and see if this is one we care about
             for(auto & servo : servos) {
                 if(servo.joystick_axis == event.number)
+                {
+                    request_servo_value(&servo, js_get_axis_event_value(&event));
+                    break;
+                }
+            }
+        }
+
+        // Ignore the other event types for now (buttons and init)
+
+    }
+
+    return nullptr;
+}
+
+void *second_joystick_reader_thread(void *ptr)
+{
+    js_event event = {};
+
+    // Wait for an event and update the array of servos if it's
+    // one of the axes we care about.
+    while (read_joystick_event(second_joystick_fd, &event) == 0) {
+
+        // Toss something into the firehose
+        log_trace("JS event: type: %d, number: %d, value: %d", event.type, event.number, event.value);
+
+        // If this is an axis event, process it
+        if (event.type == JS_EVENT_AXIS) {
+
+            // Walk the servo list and see if this is one we care about
+            for(auto & servo : servos) {
+                if(servo.joystick_axis == event.number + 6)
                 {
                     request_servo_value(&servo, js_get_axis_event_value(&event));
                     break;

@@ -32,8 +32,13 @@ Config::Config(int argc, char **argv) {
 bool Config::isUartActive() {
     return useUART;
 }
+
 bool Config::isJoystickActive() {
     return useJoystick;
+}
+
+bool Config::isSecondJoystickActive() {
+    return useSecondJoystick;
 }
 
 const char* Config::getUart() {
@@ -42,6 +47,10 @@ const char* Config::getUart() {
 
 const char* Config::getJoystick() {
     return joystickDevice;
+}
+
+const char* Config::getSecondJoystick() {
+    return secondJoystickDevice;
 }
 
 useconds_t Config::getFrameTime() {
@@ -74,6 +83,7 @@ void Config::doHelp(const char* progname) {
     printf("  --help                Show this message\n");
     printf("  --uart(=device)       Use UART on [device] or default      (default: %s)\n", defaultUart);
     printf("  --joystick(=device)   Use joystick on [device] or default  (default: %s)\n", defaultJoystick);
+    printf("  --second-joystick     Use a second joystick                (default: %s)\n", defaultSecondJoystick);
     printf("  --dmx                 Use DMX                              (default: %s)\n", defaultUseDmx ? "true" : "false");
     printf("  --universe            E1.31 Universe                       (default: %d)\n", defaultUniverse);
     printf("  --frame-time          Number of milliseconds in each frame (default: %d)\n", defaultFrameTime);
@@ -104,17 +114,18 @@ int Config::processCommandLine(int argc, char **argv) {
 
     const char* const short_opts = "vu:j:dhft";
     const option options[] = {
-            {"verbose",     no_argument,        nullptr,    'v'},
-            {"uart",        optional_argument,  nullptr,    'u'},
-            {"joystick",    optional_argument,  nullptr,    'j'},
-            {"dmx",         no_argument,        nullptr,    'd'},
-            {"help",        no_argument,        nullptr,    'h'},
-            {"firehose",    no_argument,        nullptr,    'f'},
-            {"frame-time",  required_argument,  nullptr,    't'},
-            {"unicast",     optional_argument,  nullptr,    'c'},
-            {"multicast",   no_argument,        nullptr,    'm'},
-            {"universe",    required_argument,  nullptr,    'n'},
-            {nullptr,       no_argument,        nullptr,     0 }
+            {"verbose",         no_argument,        nullptr,    'v'},
+            {"uart",            optional_argument,  nullptr,    'u'},
+            {"joystick",        optional_argument,  nullptr,    'j'},
+            {"second-joystick", optional_argument,  nullptr,    's'},
+            {"dmx",             no_argument,        nullptr,    'd'},
+            {"help",            no_argument,        nullptr,    'h'},
+            {"firehose",        no_argument,        nullptr,    'f'},
+            {"frame-time",      required_argument,  nullptr,    't'},
+            {"unicast",         optional_argument,  nullptr,    'c'},
+            {"multicast",       no_argument,        nullptr,    'm'},
+            {"universe",        required_argument,  nullptr,    'n'},
+            {nullptr,           no_argument,        nullptr,     0 }
     };
 
 
@@ -139,6 +150,11 @@ int Config::processCommandLine(int argc, char **argv) {
                 useJoystick = true;
                 joystickDevice = (optarg == nullptr) ? defaultJoystick : optarg;
                 log_debug("joystick device is now %s", joystickDevice);
+                break;
+            case 's':
+                useSecondJoystick = true;
+                secondJoystickDevice = (optarg == nullptr) ? defaultSecondJoystick : optarg;
+                log_debug("second joystick device is now %s", secondJoystickDevice);
                 break;
             case 'd':
                 useDmx = true;

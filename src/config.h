@@ -10,7 +10,7 @@
 // HOP
 #define HEADER_SIZE 3
 
-#define NUM_SERVOS 6
+#define NUM_SERVOS 12
 
 #define DEBUG 1
 
@@ -38,9 +38,11 @@ public:
 
     bool isUartActive();
     bool isJoystickActive();
+    bool isSecondJoystickActive();
 
     const char* getUart();
     const char* getJoystick();
+    const char* getSecondJoystick();
     useconds_t getFrameTime();
 
     char* getHostname();
@@ -56,10 +58,12 @@ private:
     // Config Defaults
     //
     const char* defaultJoystick = "/dev/input/js0";
+    const char* defaultSecondJoystick = "/dev/input/js1";
     const char* defaultUart = "/dev/ttyUSB0";
     bool defaultUseDmx = false;
     bool defaultUseUart = false;
     bool defaultUseJoystick = false;
+    bool defaultUseSecondJoystick = false;
     uint32_t defaultFrameTime = 25;
     PacketType defaultNetworkMode = multicast;
     uint16_t defaultUniverse = 1;
@@ -68,6 +72,7 @@ private:
 
     bool useUART = defaultUseUart;
     bool useJoystick = defaultUseJoystick;
+    bool useSecondJoystick = defaultUseSecondJoystick;
     bool useDmx = defaultUseDmx;
     useconds_t frameTime = defaultFrameTime * 1000;
 
@@ -78,6 +83,7 @@ private:
 
     const char* uartDevice;
     const char* joystickDevice;
+    const char* secondJoystickDevice;
 
     char hostname[HOST_NAME_MAX];
 
