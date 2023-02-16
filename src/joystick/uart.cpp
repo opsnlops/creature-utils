@@ -7,10 +7,10 @@
 #include <termios.h>
 #include <unistd.h>
 
-#include "config.h"
+#include "joystick/config.h"
 
-#include "servo.h"
-#include "uart.h"
+#include "joystick/servo.h"
+#include "joystick/uart.h"
 
 extern int uart_fd;
 extern servo servos[NUM_SERVOS];

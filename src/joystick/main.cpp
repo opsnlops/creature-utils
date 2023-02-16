@@ -2,15 +2,13 @@
 
 #include <pthread.h>
 #include <termios.h>
-#include <cctype>
-#include <unistd.h>
 #include "log.h"
 
-#include "config.h"
-#include "joystick.h"
-#include "servo.h"
-#include "uart.h"
-#include "display.h"
+#include "joystick/config.h"
+#include "joystick/joystick.h"
+#include "joystick/servo.h"
+#include "joystick/uart.h"
+#include "joystick/display.h"
 
 #include "dmx/dmx.h"
 

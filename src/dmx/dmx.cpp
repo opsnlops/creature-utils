@@ -4,13 +4,13 @@
 #include <cstring>
 
 
-#include "dmx.h"
+#include "dmx/dmx.h"
 
 #include "e131.h"
 
-#include "config.h"
+#include "joystick/config.h"
 #include "log.h"
-#include "servo.h"
+#include "joystick/servo.h"
 
 
 extern servo servos[NUM_SERVOS];

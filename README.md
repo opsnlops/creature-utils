@@ -1,7 +1,10 @@
-# Joystick-driven DMX-like sender
+# Creature Utils for Linux Computers
 
-This application uses any joystick that Linux supports to send a DMX-like byte array down the wire via a UART, to a listening controller.
+This is my collection of utilities for Creatures. My goal is to write it in portable C that can compile on a lot of different platforms, as long as they run Linux. (Mostly Raspberry Pis and normal Debian Linux.)
 
-It's a prototyping feature, to allow me to use any joystick I want to send events to program (and test) creatures as I work on them. :)
 
-I own a lot of joysticks. Right now the DS4 is my current favorite (I have several), but I'm always looking for a new favorite.
+## Joystick
+
+Opens joysticks (can open more than one to get a lot of channels) and uses it to send E1.31 packets with control frames.
+
+This is what I use for testing and programming Creatures.

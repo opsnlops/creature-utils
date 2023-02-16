@@ -5,7 +5,7 @@
 #include <pthread.h>
 #include <termios.h>
 
-#include "config.h"
+#include "joystick/config.h"
 
 
 class DMX {

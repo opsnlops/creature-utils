@@ -6,7 +6,7 @@
 #include <cstring>
 
 
-#include "config.h"
+#include "joystick/config.h"
 
 #include "log.h"
 

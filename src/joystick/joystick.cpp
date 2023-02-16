@@ -8,10 +8,10 @@
 
 #include "log.h"
 
-#include "config.h"
+#include "joystick/config.h"
 
-#include "joystick.h"
-#include "servo.h"
+#include "joystick/joystick.h"
+#include "joystick/servo.h"
 
 
 extern Config* config;

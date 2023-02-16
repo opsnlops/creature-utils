@@ -3,12 +3,12 @@
 #include <unistd.h>
 #include <pthread.h>
 
-#include "config.h"
+#include "joystick/config.h"
 
 #include "log.h"
 
-#include "display.h"
-#include "servo.h"
+#include "joystick/display.h"
+#include "joystick/servo.h"
 
 extern servo servos[NUM_SERVOS];
 uint8_t InfoDisplay::oldServoValues[NUM_SERVOS];
