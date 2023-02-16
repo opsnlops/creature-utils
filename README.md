@@ -9,3 +9,10 @@ This is my collection of utilities for Creatures. My goal is to write it in port
 Opens joysticks (can open more than one to get a lot of channels) and uses it to send E1.31 packets with control frames.
 
 This is what I use for testing and programming Creatures.
+
+
+## Stress Test
+
+Generates random frames!
+
+Used for testing a creature. Not a good idea to run on a fully assembled one. 😅
