@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.16)
 
 project(creature-utils
         VERSION 0.2.0
@@ -55,6 +55,6 @@ add_executable(stress-test
         ${STRESS_TESTS_SOURCES}
         )
 
-link_libraries(
+target_link_libraries(joystick
         Threads::Threads
         )
