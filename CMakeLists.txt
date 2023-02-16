@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.18)
 
 project(creature-utils
-        VERSION 0.1.0
+        VERSION 0.2.0
         DESCRIPTION "Utilities for controlling April's Creatures"
         HOMEPAGE_URL https://github.com/opsnlops/creature-utils
         LANGUAGES C CXX)
@@ -19,30 +19,42 @@ find_package(Threads REQUIRED)
 add_definitions(-DLOG_USE_COLOR)
 
 # Our source files
-file(GLOB commonFiles
-        src/*
-        src/creature/*
-        src/dmx/*
-        src/joystick/*
+file(GLOB COMMON_SOURCES
         lib/log.c/src/*
         lib/libe131/src/*
         )
 
-include_directories(joystick
-        src
+set(JOYSTICK_SOURCES
+        src/dmx/dmx.cpp
+        src/joystick/config.cpp
+        src/joystick/display.cpp
+        src/joystick/joystick.cpp
+        src/joystick/main.cpp
+        src/joystick/servo.cpp
+        src/joystick/uart.cpp
+        )
+
+set(STRESS_TESTS_SOURCES
+        src/stress-test/main.cpp
+        )
+
+
+include_directories(
+        src/
         lib/log.c/src
         lib/libe131/src
         )
 
 add_executable(joystick
-        ${commonFiles}
-        joystick/
-        dmx/
-        creature/
-        .
+        ${COMMON_SOURCES}
+        ${JOYSTICK_SOURCES}
         )
 
-target_link_libraries(joystick
-        PRIVATE
+add_executable(stress-test
+        ${COMMON_SOURCES}
+        ${STRESS_TESTS_SOURCES}
+        )
+
+link_libraries(
         Threads::Threads
         )
