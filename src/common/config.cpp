@@ -6,7 +6,7 @@
 #include <cstring>
 
 
-#include "joystick/config.h"
+#include "config.h"
 
 #include "log.h"
 
@@ -79,7 +79,7 @@ void Config::doHelp(const char* progname) {
     printf("usage: %s [--help] [--firehose] [--uart(=device)] [--joystick(=device)] [--dmx] [--frame-time=<frameMs>] [--verbose]\n", progname);
 
     printf("\n");
-    printf("Options:\n");
+    printf("Shared Options:\n");
     printf("  --help                Show this message\n");
     printf("  --uart(=device)       Use UART on [device] or default      (default: %s)\n", defaultUart);
     printf("  --joystick(=device)   Use joystick on [device] or default  (default: %s)\n", defaultJoystick);
@@ -91,6 +91,10 @@ void Config::doHelp(const char* progname) {
     printf("  --unicast(=targetIP)  Use unicast networking               (default: %s)\n", defaultNetworkMode == unicast ? "true" : "false");
     printf("  --verbose             Verbose logging\n");
     printf("  --firehose            I wish to drink from the log firehose\n");
+    printf("\n");
+    printf("  Note that all options may not be required (or even needed) on all programs\n");
+    printf("  in this suite.\n");
+    printf("\n");
     printf("\n");
     printf(" *** Network Info ***\n");
     printf("  - Only one of unicast or multicast can be used at once.\n");

@@ -8,7 +8,7 @@
 
 #include "log.h"
 
-#include "joystick/config.h"
+#include "common/config.h"
 
 #include "joystick/joystick.h"
 #include "joystick/servo.h"

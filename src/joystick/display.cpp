@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <pthread.h>
 
-#include "joystick/config.h"
+#include "common/config.h"
 
 #include "log.h"
 

@@ -5,7 +5,7 @@
 
 #include "joystick/servo.h"
 
-#include "log.h"
+#include "logging/logging.h"
 
 /**
  * Safely set up a new servo
@@ -21,7 +21,7 @@ void init_servo(servo *s, u_int8_t joystick_axis, bool inverted) {
     s->requested_value = 127;
     s->inverted = inverted;
 
-    log_debug("Paying attention to axis %d", s->joystick_axis);
+    debug("Paying attention to axis %d", s->joystick_axis);
 }
 
 /**

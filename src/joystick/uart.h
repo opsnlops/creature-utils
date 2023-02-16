@@ -3,7 +3,7 @@
 
 #include <cstdio>
 
-#include "config.h"
+#include "common/config.h"
 
 int open_uart(const char* device, int baud);
 void close_uart(int fd);

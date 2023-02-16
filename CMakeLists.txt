@@ -26,7 +26,7 @@ file(GLOB COMMON_SOURCES
 
 set(JOYSTICK_SOURCES
         src/dmx/dmx.cpp
-        src/joystick/config.cpp
+        src/common/config.cpp
         src/joystick/display.cpp
         src/joystick/joystick.cpp
         src/joystick/main.cpp
@@ -35,6 +35,7 @@ set(JOYSTICK_SOURCES
         )
 
 set(STRESS_TESTS_SOURCES
+        src/common/config.cpp
         src/stress-test/main.cpp
         )
 

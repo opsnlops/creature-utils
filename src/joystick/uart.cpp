@@ -7,7 +7,7 @@
 #include <termios.h>
 #include <unistd.h>
 
-#include "joystick/config.h"
+#include "common/config.h"
 
 #include "joystick/servo.h"
 #include "joystick/uart.h"

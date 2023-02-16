@@ -8,7 +8,7 @@
 
 #include "e131.h"
 
-#include "joystick/config.h"
+#include "common/config.h"
 #include "log.h"
 #include "joystick/servo.h"
 
