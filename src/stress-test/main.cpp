@@ -1,9 +1,10 @@
 
-#include <stdio.h>
+
+#include "logging/logging.h"
 
 int main() {
 
-    printf("hi!!!!!\n\n\n");
+    info("Hi!");
 
     return 1;
 

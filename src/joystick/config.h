@@ -87,7 +87,4 @@ private:
 
     char hostname[HOST_NAME_MAX];
 
-
-
-
 };

@@ -2,7 +2,8 @@
 
 #include <pthread.h>
 #include <termios.h>
-#include "log.h"
+
+#include "logging/logging.h"
 
 #include "joystick/config.h"
 #include "joystick/joystick.h"
@@ -34,14 +35,14 @@ int main(int argc, char **argv) {
     // Create the config
     config = new Config(argc, argv);
     if(config->processCommandLine(argc, argv) != 1) {
-        log_warn("processCommandLine() did not return 1");
+        warning("processCommandLine() did not return 1");
         config->doHelp(programName);
         exit(0);
     }
 
     if(!config->isJoystickActive())
     {
-        log_warn("joystick is not in use");
+        warning("joystick is not in use");
         config->doHelp(programName);
         exit(0);
     }
@@ -64,21 +65,21 @@ int main(int argc, char **argv) {
     }
 
     if(config->isJoystickActive()) {
-        log_debug("attempting to open %s", config->getJoystick());
+        debug("attempting to open %s", config->getJoystick());
         joystick_fd = open_joystick(config->getJoystick());
-        log_info("opened joystick: %s", config->getJoystick());
+        info("opened joystick: %s", config->getJoystick());
     }
 
     if(config->isSecondJoystickActive()) {
-        log_debug("attempting to open %s", config->getSecondJoystick());
+        debug("attempting to open %s", config->getSecondJoystick());
         second_joystick_fd = open_joystick(config->getSecondJoystick());
-        log_info("opened joystick: %s", config->getSecondJoystick());
+        info("opened joystick: %s", config->getSecondJoystick());
     }
 
     if(config->isUartActive()) {
-        log_debug("attempting to open %s", config->getUart());
+        debug("attempting to open %s", config->getUart());
         uart_fd = open_uart(config->getUart(), B57600);
-        log_info("opened uart: %s", config->getUart());
+        info("opened uart: %s", config->getUart());
     }
 
     auto display = new InfoDisplay(config);
